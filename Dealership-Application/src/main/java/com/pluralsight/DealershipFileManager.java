@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class DealershipFileManager
 {
 
-    private Dealership loadDearlership()
+    public Dealership loadDearlership()
     {
         Dealership dealership = null;
 
@@ -47,7 +47,7 @@ public class DealershipFileManager
         return dealership;
     }
 
-    public void saveDealership(Dealership dealership) {} 
+    public void saveDealership(Dealership dealership) {}
 
 
 
