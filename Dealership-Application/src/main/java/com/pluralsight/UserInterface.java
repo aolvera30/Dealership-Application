@@ -93,6 +93,14 @@ public class UserInterface
         displayVehicles(allVehicles);
     }
 
+    public void processGetAllVehiclesRequest() {
+        // 1. Call the dealership's getAllVehicles() method to get the list of all vehicles
+        List<Vehicle> allVehicles = dealership.getAllVehicles();
+
+        // 2. Call the displayVehicles() helper method passing it the list of all vehicles
+        displayVehicles(allVehicles);
+    }
+
 
 
 
@@ -106,8 +114,6 @@ public class UserInterface
     public void processGetByMileageRequest() {}
 
     public void processGetByVehicleTypeRequest() {}
-
-    public void processGetAllVehiclesRequest() {}
 
     public void processAddVehicleRequest() {}
 

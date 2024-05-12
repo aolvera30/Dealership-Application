@@ -14,7 +14,7 @@ public class DealershipFileManager
         Dealership dealership = null;
 
         // Read data from the inventory CSV file
-        try(Scanner fileScanner = new Scanner(new File("inventory.csv"))) {
+        try(Scanner fileScanner = new Scanner(new File("Files/inventory.csv"))) {
             String dealerLine = fileScanner.nextLine(); // this is the dealership  name, address and phone
             String[] parts = dealerLine.split("\\|");
             dealership = new Dealership(parts[0], parts[1], parts[2]);

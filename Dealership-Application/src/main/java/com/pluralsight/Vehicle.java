@@ -102,5 +102,10 @@ public class Vehicle
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "VIN: " + vin + ", Year: " + year + ", Make: " + make + ", Model: " + model + ", Color: " + color + ", Odometer: " + odometer + ", Price: " + price;
+    }
+
 
 }
