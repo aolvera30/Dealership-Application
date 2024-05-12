@@ -2,6 +2,8 @@ package com.pluralsight;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -47,9 +49,23 @@ public class DealershipFileManager
         return dealership;
     }
 
-    public void saveDealership(Dealership dealership) {}
+    public void saveDealership(Dealership dealership) {
+        try (FileWriter writer = new FileWriter("Files/inventory.csv")) {
+            // Write dealership information (name, address, phone)
+            writer.write(dealership.getName() + " | " + dealership.getAddress() + " | " + dealership.getPhone() + "\n");
 
+            // Write each vehicle in the inventory
+            List<Vehicle> vehicles = dealership.getAllVehicles();
+            for (Vehicle vehicle : vehicles) {
+                writer.write(vehicle.getVin() + " | " + vehicle.getYear() + " | " + vehicle.getMake() + " | " +
+                        vehicle.getModel() + " | " + vehicle.getVehicleType() + " | " + vehicle.getColor() + " | " +
+                        vehicle.getOdometer() + " | " + vehicle.getPrice() + "\n");
+            }
 
+        } catch (IOException e) {
+            // Handle file writing errors
+            e.printStackTrace();
+        }
 
-
+    }
 }

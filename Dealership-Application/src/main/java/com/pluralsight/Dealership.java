@@ -83,7 +83,7 @@ public class Dealership
     }
 
     public void removeVehicle(Vehicle vehicle){
-        // Empty method
+        inventory.remove(vehicle);
     }
 
 

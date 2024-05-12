@@ -6,20 +6,26 @@ import java.util.Scanner;
 public class UserInterface
 {
     private Dealership dealership;
+    private DealershipFileManager fileManager;
 
-    public  UserInterface() {
+
+    public UserInterface()
+    {
         init();
+        fileManager = new DealershipFileManager();
 
     }
 
-    private void init() {
+    private void init()
+    {
         DealershipFileManager dealershipFileManager = new DealershipFileManager();
         this.dealership = dealershipFileManager.loadDearlership();
 
     }
 
 
-    public void display() {
+    public void display()
+    {
         init(); // Load the dealership data
 
         Scanner userInput = new Scanner(System.in);
@@ -62,11 +68,51 @@ public class UserInterface
                     processGetAllVehiclesRequest();
                     break;
                 case 7:
-                    processAddVehicleRequest();
+                    // Prompt user for details
+                    System.out.println("Enter vehicle details:");
+                    System.out.print("VIN: ");
+                    int vin = userInput.nextInt();
+                    userInput.nextLine();
+                    System.out.print("Year: ");
+                    int year = userInput.nextInt();
+                    userInput.nextLine();
+                    System.out.print("Make: ");
+                    String make = userInput.nextLine();
+                    System.out.print("Model: ");
+                    String model = userInput.nextLine();
+                    System.out.print("Vehicle Type: ");
+                    String vehicleType = userInput.nextLine();
+                    System.out.print("Color: ");
+                    String color = userInput.nextLine();
+                    System.out.print("Odometer: ");
+                    int odometer = userInput.nextInt();
+                    userInput.nextLine();
+                    System.out.print("Price: ");
+                    double price = userInput.nextDouble();
+                    userInput.nextLine(); // Consume newline
+
+                    // Create a new Vehicle object with the entered details
+                    Vehicle newVehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+
+                    processAddVehicleRequest(newVehicle);
                     break;
+
                 case 8:
-                    processRemoveVehicleRequest();
+                    // Prompt the user to enter the VIN of the vehicle to remove
+                    System.out.print("Enter the VIN of the vehicle to remove: ");
+                    int vinToRemove = userInput.nextInt();
+                    userInput.nextLine();
+
+                    // Search for the vehicle in the dealership's inventory
+                    Vehicle vehicleToRemove = findVehicleByVIN(vinToRemove);
+
+                    if (vehicleToRemove != null) {
+                        processRemoveVehicleRequest(vinToRemove);
+                    } else {
+                        System.out.println("Vehicle with VIN " + vinToRemove + " not found.");
+                    }
                     break;
+
                 case 0:
                     running = false;
                     System.out.println("Exiting...");
@@ -78,14 +124,39 @@ public class UserInterface
         userInput.close();
     }
 
-    private void displayVehicles(List<Vehicle> vehicles) {
+    // Helper Method
+    private void displayVehicles(List<Vehicle> vehicles)
+    {
         for (Vehicle vehicle : vehicles) {
             // Display each vehicle information
             System.out.println(vehicle.toString());
         }
     }
 
-    public void processAllVehiclesRequest() {
+
+    public void processGetByMakeModelRequest()
+    {
+    }
+
+    public void processGetByYearRequest()
+    {
+    }
+
+    public void processGetByColorRequest()
+    {
+    }
+
+    public void processGetByMileageRequest()
+    {
+    }
+
+    public void processGetByVehicleTypeRequest()
+    {
+    }
+
+
+    public void processGetAllVehiclesRequest()
+    {
         // 1. Call the dealership's getAllVehicles() method to get the list of all vehicles
         List<Vehicle> allVehicles = dealership.getAllVehicles();
 
@@ -93,29 +164,37 @@ public class UserInterface
         displayVehicles(allVehicles);
     }
 
-    public void processGetAllVehiclesRequest() {
-        // 1. Call the dealership's getAllVehicles() method to get the list of all vehicles
-        List<Vehicle> allVehicles = dealership.getAllVehicles();
-
-        // 2. Call the displayVehicles() helper method passing it the list of all vehicles
-        displayVehicles(allVehicles);
+    // Add Vehicle
+    public void processAddVehicleRequest(Vehicle vehicle)
+    {
+        dealership.addVehicle(vehicle); // Add vehicle to the dealership inventory
+        fileManager.saveDealership(dealership); // Save the updated inventory
+        System.out.println("Vehicle added successfully.");
+        System.out.println();
     }
 
+    // Remove Vehicle
+    public void processRemoveVehicleRequest(int vin)
+    {
+        Vehicle vehicleToRemove = findVehicleByVIN(vin);
+        if (vehicleToRemove != null) {
+        dealership.removeVehicle(vehicleToRemove);
+        fileManager.saveDealership(dealership);
+            System.out.println("Vehicle with VIN " + vin + " removed successfully.");
+            System.out.println();
+        } else {
+            System.out.println("Vehicle with VIN " + vin + " not found.");
+            System.out.println();
+        }
+    }
 
-
-
-
-    public void processGetByMakeModelRequest() {}
-
-    public void processGetByYearRequest() {}
-
-    public void processGetByColorRequest() {}
-
-    public void processGetByMileageRequest() {}
-
-    public void processGetByVehicleTypeRequest() {}
-
-    public void processAddVehicleRequest() {}
-
-    public void processRemoveVehicleRequest() {}
+    private Vehicle findVehicleByVIN(int vin)
+    {
+        for (Vehicle vehicle : dealership.getAllVehicles()) {
+            if (vehicle.getVin() == vin) {
+                return vehicle; // Found the vehicle
+            }
+        }
+        return null; // Vehicle with the given VIN not found
+    }
 }
