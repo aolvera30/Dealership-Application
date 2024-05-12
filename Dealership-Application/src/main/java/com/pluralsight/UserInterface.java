@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface
@@ -76,6 +77,24 @@ public class UserInterface
         }
         userInput.close();
     }
+
+    private void displayVehicles(List<Vehicle> vehicles) {
+        for (Vehicle vehicle : vehicles) {
+            // Display each vehicle information
+            System.out.println(vehicle.toString());
+        }
+    }
+
+    public void processAllVehiclesRequest() {
+        // 1. Call the dealership's getAllVehicles() method to get the list of all vehicles
+        List<Vehicle> allVehicles = dealership.getAllVehicles();
+
+        // 2. Call the displayVehicles() helper method passing it the list of all vehicles
+        displayVehicles(allVehicles);
+    }
+
+
+
 
 
     public void processGetByMakeModelRequest() {}
